@@ -1,5 +1,7 @@
 from csv import reader
 from strumento import Strumento
+from operator import attrgetter
+
 
 class DepositoStrumenti:
     def __init__(self, nome_deposito, responsabile):
@@ -46,11 +48,12 @@ class DepositoStrumenti:
         self.dizionario_strumenti[nuovo_codice] = strumento_nuovo
         return strumento_nuovo
 
-
-
     def strumenti_ordinati_per_marca(self):
         """Ordina gli strumenti per marca in ordine alfabetico"""
-        # TODO
+        lista_strumenti = self.dizionario_strumenti.values()
+        lista_ordinata = sorted(lista_strumenti, key = attrgetter("marca"))
+
+        return lista_ordinata
 
     def nuovo_prestito(self, data, id_strumento, cognome_allievo):
         """Crea un nuovo prestito"""
