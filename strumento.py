@@ -10,6 +10,6 @@ class Strumento:
         self.prestato = False
 
     def __repr__(self):
-        return f"{self.codice_strumento} {self.tipo} {self.marca} {self.anno_acquisto} {self.valore} - Prestito: {self.prestato}"
+        return f"{self.codice_strumento} {self.tipo} {self.marca} {self.anno_acquisto} {self.valore} - Prestato: {self.prestato}"
 
 

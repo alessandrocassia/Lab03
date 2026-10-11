@@ -72,7 +72,16 @@ class DepositoStrumenti:
 
         return prestito
 
-
     def termina_prestito(self, id_prestito):
         """Termina un prestito in atto"""
-        # TODO
+        if id_prestito not in self.dizionario_prestiti:
+            raise Exception("non è stato effettuato alcun prestito con questo codice identificativo")
+
+        prestito_corrente = self.dizionario_prestiti[id_prestito]
+        id_strumento_prestito = prestito_corrente.id_strumento
+        del self.dizionario_prestiti[id_prestito]
+
+        strumento_prestito_corrente = self.dizionario_strumenti[id_strumento_prestito]
+        strumento_prestito_corrente.prestato = False
+
+
