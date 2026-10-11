@@ -1,7 +1,7 @@
 from csv import reader
 from strumento import Strumento
 from operator import attrgetter
-
+from prestito import Prestito
 
 class DepositoStrumenti:
     def __init__(self, nome_deposito, responsabile):
@@ -9,8 +9,8 @@ class DepositoStrumenti:
         self.nome_deposito = nome_deposito
         self.__responsabile = responsabile
         self.dizionario_strumenti = dict()
-    def __repr__(self):
-        return f"{self.nome_deposito} {self.responsabile}"
+        self.dizionario_prestiti = dict()
+
     @property
     def responsabile(self):
         return self.__responsabile
@@ -25,15 +25,15 @@ class DepositoStrumenti:
             with open(file_path) as csvfile:
                 file = reader(csvfile)
                 for line in file:
-                    codice = line[0]
+                    codice_strumento = line[0]
                     tipo = line[1]
                     marca = line[2]
                     anno_acquisto = int(line[3])
                     valore = float(line[4])
 
-                    s = Strumento(codice, tipo, marca, anno_acquisto, valore) #creo l'oggetto strumento con i dati del file
+                    s = Strumento(codice_strumento, tipo, marca, anno_acquisto, valore) #creo l'oggetto strumento con i dati del file
 
-                    self.dizionario_strumenti[codice] = s #aggiungo l'oggetto strumento al dizionario del deposito
+                    self.dizionario_strumenti[codice_strumento] = s #aggiungo l'oggetto strumento al dizionario del deposito
                     #print(s)
 
         except FileNotFoundError: #nel caso in cui il nome del file fosse sbagliato sollevo un'eccezione
@@ -57,7 +57,21 @@ class DepositoStrumenti:
 
     def nuovo_prestito(self, data, id_strumento, cognome_allievo):
         """Crea un nuovo prestito"""
-        # TODO
+        if id_strumento not in self.dizionario_strumenti:
+            raise Exception("lo strumento non è ancora presente nel nostro deposito")
+
+        strumento_corrente = self.dizionario_strumenti[id_strumento]
+
+        if strumento_corrente.prestato: #verifico se lo strumento è già stato dato in prestito
+            raise Exception("lo strumento è già stato prestato e al momento non è disponibile")
+
+        numero_ultimo_prestito = len(self.dizionario_prestiti)
+        nuovo_codice_prestito = f"P{numero_ultimo_prestito +1}"
+        prestito = Prestito(nuovo_codice_prestito, data, id_strumento, cognome_allievo)
+        self.dizionario_strumenti[id_strumento].prestato = True
+
+        return prestito
+
 
     def termina_prestito(self, id_prestito):
         """Termina un prestito in atto"""
