@@ -1,7 +1,10 @@
+from csv import reader
+from strumento import Strumento
+
 class DepositoStrumenti:
-    def __init__(self, nome, responsabile):
+    def __init__(self, nome_deposito, responsabile):
         """Inizializza gli attributi e le strutture dati"""
-        self.nome = nome
+        self.nome_deposito = nome_deposito
         self.__responsabile = responsabile
         self.strumenti_deposito = dict()
 
@@ -12,14 +15,28 @@ class DepositoStrumenti:
     def responsabile(self, responsabile):
         self.__responsabile = responsabile
 
+    def __repr__(self):
+        return f"{self.nome_deposito} {self.responsabile}"
+
 
     def carica_file_strumenti(self, file_path):
         """Carica gli strumenti dal file"""
         try:
             with open(file_path) as csvfile:
-                pass
+                file = reader(csvfile)
+                for line in file:
+                    codice = line[0]
+                    nome = line[1]
+                    marca = line[2]
+                    anno_acquisto = int(line[3])
+                    valore = float(line[4])
 
-        except FileNotFoundError:
+                    s = Strumento(codice, nome, marca, anno_acquisto, valore) #creo l'oggetto strumento con i dati del file
+
+                    self.strumenti_deposito[codice] = s #aggiungo l'oggetto strumento al dizionario del deposito
+                    #print(s)
+
+        except FileNotFoundError: #nel caso in cui il nome del file fosse sbagliato sollevo un'eccezione
             raise FileNotFoundError("non è stato possibile aprire il file")
 
 

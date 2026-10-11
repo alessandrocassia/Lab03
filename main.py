@@ -24,12 +24,12 @@ def main():
             deposito.responsabile = nuovo_responsabile
             #print(deposito.responsabile)
 
-
         elif scelta == "2":
             while True:
                 try:
                     file_path = input("Inserisci il path del file da caricare: ").strip()
                     deposito.carica_file_strumenti(file_path)
+                    print(deposito)
                     break
                 except Exception as e:
                     print(e)
@@ -37,6 +37,7 @@ def main():
         elif scelta == "3":
             tipo = input("Tipo di strumento: ")
             marca = input("Marca: ")
+
             try:
                 anno_acquisto = int(input("Anno di acquisto: ").strip())
                 valore = float(input("Valore (euro): ").strip())
