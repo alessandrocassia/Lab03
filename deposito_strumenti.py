@@ -6,17 +6,15 @@ class DepositoStrumenti:
         """Inizializza gli attributi e le strutture dati"""
         self.nome_deposito = nome_deposito
         self.__responsabile = responsabile
-        self.strumenti_deposito = dict()
-
+        self.dizionario_strumenti = dict()
+    def __repr__(self):
+        return f"{self.nome_deposito} {self.responsabile}"
     @property
     def responsabile(self):
         return self.__responsabile
     @responsabile.setter
     def responsabile(self, responsabile):
         self.__responsabile = responsabile
-
-    def __repr__(self):
-        return f"{self.nome_deposito} {self.responsabile}"
 
 
     def carica_file_strumenti(self, file_path):
@@ -26,25 +24,29 @@ class DepositoStrumenti:
                 file = reader(csvfile)
                 for line in file:
                     codice = line[0]
-                    nome = line[1]
+                    tipo = line[1]
                     marca = line[2]
                     anno_acquisto = int(line[3])
                     valore = float(line[4])
 
-                    s = Strumento(codice, nome, marca, anno_acquisto, valore) #creo l'oggetto strumento con i dati del file
+                    s = Strumento(codice, tipo, marca, anno_acquisto, valore) #creo l'oggetto strumento con i dati del file
 
-                    self.strumenti_deposito[codice] = s #aggiungo l'oggetto strumento al dizionario del deposito
+                    self.dizionario_strumenti[codice] = s #aggiungo l'oggetto strumento al dizionario del deposito
                     #print(s)
 
         except FileNotFoundError: #nel caso in cui il nome del file fosse sbagliato sollevo un'eccezione
             raise FileNotFoundError("non è stato possibile aprire il file")
 
-
-
-
     def aggiungi_strumento(self, tipo, marca, anno_acquisto, valore):
         """Aggiunge uno strumento nel deposito: aggiunge solo nel sistema e non aggiorna il file"""
-        # TODO
+        numero_ultimo_codice = len(self.dizionario_strumenti)
+        nuovo_codice = f"S{numero_ultimo_codice + 1}"
+
+        strumento_nuovo = Strumento(nuovo_codice, tipo, marca, anno_acquisto, valore)
+        self.dizionario_strumenti[nuovo_codice] = strumento_nuovo
+        return strumento_nuovo
+
+
 
     def strumenti_ordinati_per_marca(self):
         """Ordina gli strumenti per marca in ordine alfabetico"""
