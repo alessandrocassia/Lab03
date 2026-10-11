@@ -3,6 +3,7 @@ class DepositoStrumenti:
         """Inizializza gli attributi e le strutture dati"""
         self.nome = nome
         self.__responsabile = responsabile
+        self.strumenti_deposito = dict()
 
     @property
     def responsabile(self):
@@ -14,7 +15,15 @@ class DepositoStrumenti:
 
     def carica_file_strumenti(self, file_path):
         """Carica gli strumenti dal file"""
-        # TODO
+        try:
+            with open(file_path) as csvfile:
+                pass
+
+        except FileNotFoundError:
+            raise FileNotFoundError("non è stato possibile aprire il file")
+
+
+
 
     def aggiungi_strumento(self, tipo, marca, anno_acquisto, valore):
         """Aggiunge uno strumento nel deposito: aggiunge solo nel sistema e non aggiorna il file"""

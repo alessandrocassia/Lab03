@@ -1,5 +1,6 @@
 from deposito_strumenti import DepositoStrumenti
 from datetime import datetime
+from strumento import Strumento #importo la nuova classe "Strumento"
 
 def menu():
     print("\n--- MENU DEPOSITO STRUMENTI ---")
